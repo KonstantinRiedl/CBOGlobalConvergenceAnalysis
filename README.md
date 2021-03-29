@@ -5,7 +5,7 @@ Version 1.0
 Date 30.03.2021
 
 ## R e f e r e n c e
------------------
+
 ### Consensus-based optimization methods converge globally in mean-field law *
 
 by
@@ -16,7 +16,7 @@ by
 
 
 ## D e s c r i p t i o n *
----------------------
+
 MATLAB implementation illustrating CBO and the intuition behind our convex
 envelope based global convergence analysis approach.
 
