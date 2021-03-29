@@ -24,7 +24,7 @@ by
 MATLAB implementation illustrating CBO and the intuition behind our convex
 envelope based global convergence analysis approach.
 
-For the readers convenience we group the MATLAB scripts into five different
+For the reader's convenience we group the MATLAB scripts into five different
 categories:
 
 Visualization of the objective functions
