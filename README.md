@@ -13,9 +13,11 @@ Date 30.03.2021
 
 by
 
-- Massimo  F o r n a s i e r  (Technical University of Munich & Munich Data Science Institute), 
-- Timo  K l o c k  (Simula Research Laboratory & University of San Diego),
-- Konstantin  R i e d l  (Technical University of Munich)
+- Massimo &nbsp; F o r n a s i e r &nbsp; (Technical University of Munich & Munich Data Science Institute), 
+- Timo &nbsp; K l o c k &nbsp; (Simula Research Laboratory & University of San Diego),
+- Konstantin &nbsp; R i e d l &nbsp; (Technical University of Munich)
+
+https://arxiv.org/abs/2103.15130
 
 ------
 
