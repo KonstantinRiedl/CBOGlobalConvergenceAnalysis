@@ -17,6 +17,8 @@ by
 - Timo &nbsp; K l o c k &nbsp; (Simula Research Laboratory & University of San Diego),
 - Konstantin &nbsp; R i e d l &nbsp; (Technical University of Munich)
 
+https://arxiv.org/abs/2103.15130
+
 ------
 
 ## D e s c r i p t i o n
