@@ -1,8 +1,8 @@
-% CBO Intuition
+% CBO intuition
 %
-% This script illustrates the intuition behind our convex envelope based
-% analysis approach. "CBO morally performs gradient descent on the convex 
-% envelope of a given objective"
+% This script illustrates the intuition behind our novel analysis approach
+% for CBO. "CBO always performs a gradient descent of the squared Euclidean
+% distance to the global minimizer"
 % Such plot is used in Figure 1(b).
 %
 
@@ -24,7 +24,7 @@ pre_setparameters = 0;
 spatial_plot = 0;
 
 % save plot
-pdfexport = 1;
+pdfexport = 0;
 
 
 %% Energy Function E
@@ -66,7 +66,7 @@ lambda = 1;
 gamma = 0;
 learning_rate = 0.01;
 % sigma (parameter of exploration term)
-sigma = 0.1;
+sigma = 0.01;
 
 % alpha (weight in Gibbs measure for consensus point computation)
 alpha = 10^15;

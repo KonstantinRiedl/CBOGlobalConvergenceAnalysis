@@ -1,4 +1,4 @@
-% CBO Illustrative
+% CBO illustrative
 %
 % This script illustrates the optimization procedure of CBO for 2d
 % objective functions.
