@@ -1,4 +1,4 @@
-% CBO Numerical Example
+% CBO numerical example
 %
 % This script tests CBO numerically and outputs the approximation to the
 % global minimizer.
@@ -55,7 +55,7 @@ alpha = 10^15;
 
 
 %% Initialization
-V0mean = [4;4];
+V0mean = 4*ones(d,1);
 V0std = 8;
 
 
@@ -86,8 +86,16 @@ V = V0;
 % CBO
 [vstar_app] = CBO(E,parametersCBO,V0);
 
-fprintf("global minimizer (numerically): [%d;%d]\n", vstar)
-fprintf("final approximated minimizer  : [%d;%d]\n", vstar_app)
+fmtvstar     = ['global minimizer (numerically): [', repmat('%g, ', 1, numel(vstar)-1), '%g]\n'];
+fprintf(fmtvstar, vstar)
+fprintf('          with objective value: %f\n', E(vstar))
 
-
+fmtvstar_app = ['final approximated minimizer  : [', repmat('%g, ', 1, numel(vstar_app)-1), '%g]\n'];
+fprintf(fmtvstar_app, vstar_app)
+fprintf('          with objective value: %f\n', E(vstar_app))
+if E(vstar_app)<0.8 
+    fprintf('************** CBO   successful **************\n')
+else
+    fprintf('************** CBO UNsuccessful **************\n')
+end
 

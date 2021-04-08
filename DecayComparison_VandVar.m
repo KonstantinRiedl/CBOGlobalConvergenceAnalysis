@@ -1,8 +1,8 @@
-% CBO Comparison between J and Var
+% CBO comparison between our functional V and Var
 %
 % This script illustrates the optimization procedure of CBO for 1d
 % objective functions while comparing the decay behavior of our functional 
-% J with the variance of the particles.
+% V with the variance of the particles.
 %
 
 %%
@@ -15,8 +15,6 @@ co = set_color();
 % 
 % decice if time steps require pressing some arbitrary key
 manual_steps = 0;
-% error metrics to be plotted
-Metrics = "all";
 % plotting error metric during or after iterations
 errorplots_meanwhile = 1;
 % plotting empirical expectation of the particles
@@ -27,15 +25,19 @@ pre_setparameters = 0;
 % save video
 savevideo = 0;
 
+% plot settings
+semilogy_plot = 0; % show decays in semilogy plot
+normalized = 1; % normalize energy functional V
+
+
 
 %% Energy Function E
 
 % % dimension of the ambient space
-d = 1; % only 1d due to the convex envelope computation and plotting
+d = 1;
 
 % % energy function E
 % (E is a function mapping columnwise from R^{d\times N} to R)
-% lopsided W-shaped function in 1d
 objectivefunction = 'Rastrigin';
 [E, parametersE, parametersCBO, parametersInitialization] = objective_function(objectivefunction,d);
 
@@ -57,7 +59,7 @@ T = 2.5;
 dt = 0.1;
  
 % number of particles
-N = 32000;
+N = 320000;
 
 % lambda (parameter of consensus drift term)
 lambda = 1;
@@ -73,7 +75,7 @@ alpha = 10^15;
  
 %% Initialization
 V0mean = 4;
-V0std = 1;
+V0std = sqrt(0.8);
 
 
 %% Use pre-set setting
@@ -96,18 +98,6 @@ else
 end
 
 
-%% Convex Envelope Ec of E
-
-% % computation of the convex hull of the energy function E
-% we exploit the relationship between convex functions and their epigraphs
-convhull_dom = linspace(xrange(1), xrange(2), 10^6);
-Ec = [convhull_dom; E(convhull_dom)]';
-[indices,~] = convhull(Ec);
-
-convhull_x = Ec(indices,1); convhull_x(end) = [];
-convhull_y = Ec(indices,2); convhull_y(end) = [];
-
-
 %% CBO Algorithm - Part 1
 %initialization
 V0 = V0mean+V0std*randn(d,N);
@@ -118,14 +108,18 @@ V = V0;
 
 % Variance
 Variance = NaN(1,1+T/dt);
-% J
-J = NaN(1,1+T/dt);
+% Functional V (called Vstar)
+Vstar = NaN(1,1+T/dt);
 
 % % Initialization (for convenience, the error metrics are normalized)
-J(1) = 1;
-Variance(1) = 1;
-normal_J = sum(interp1(convhull_x,convhull_y,V0,'linear')-E(vstar))/N;
-normal_V = sum((V0-sum(V0)/N).^2)/N;
+Vstar(1) = 1/2*sum((V0-vstar/N).^2)/N;
+Variance(1) = 1/2*sum((V0-sum(V0,2)/N).^2)/N;
+if normalized
+	normal_Vstar = Vstar(1);
+	normal_V = Variance(1);
+    Vstar(1) = Vstar(1)/normal_Vstar;
+    Variance(1) = Variance(1)/normal_V;
+end
 
 
 %% Plotting
@@ -138,9 +132,6 @@ else
     figure('Position', [1200 800 500 400])
 end
 
-% % plotting convex envelope of E
-Ecplot = plot(convhull_x, convhull_y, "color", co(6,:), 'LineWidth', 2, 'LineStyle', '--');
-hold on
 % % plotting energy function E
 Eplot = fplot(E, xrange_plot, "color", co(1,:), 'LineWidth', 2);
 xlim(xrange_plot)
@@ -150,10 +141,11 @@ hold on
 vstarplot = plot(vstar, E(vstar), '*', 'MarkerSize', 10, 'LineWidth', 1.8, "color", co(5,:));
 hold on
 
-title('Setting','Interpreter','latex','FontSize',16)
-legend([Eplot, Ecplot, vstarplot], 'Objective function $\mathcal{E}$','Convex envelope $\mathcal{E}^c$','Global minimizer $v^*$','Location','northwest','Interpreter','latex','FontSize',12)
+legend([Eplot, vstarplot], 'Objective function $\mathcal{E}$','Global minimizer $v^*$','Location','northwest','Interpreter','latex','FontSize',15)
+
 ax = gca;
 ax.FontSize = 13;
+title('Setting','Interpreter','latex','FontSize',18)
 pause(dt)
 if manual_steps
     pause()
@@ -174,18 +166,20 @@ if errorplots_meanwhile
     subplot(1,2,1)
 end
 fprintf("t=0\n")
-title(sprintf("CBO at time t=0"),'Interpreter','latex','FontSize',16)
+title(sprintf("CBO at time t=0"),'Interpreter','latex','FontSize',18)
 V_plot = scatter(V0, E(V0), 20, "MarkerFaceColor", co(3,:), "MarkerEdgeColor", co(3,:));
 hold on
-legend([Eplot, Ecplot, vstarplot, V_plot], 'Objective function $\mathcal{E}$','Convex envelope $\mathcal{E}^c$','Global minimizer $v^*$','Particles $V_0^i$','Location','northwest','Interpreter','latex','FontSize',12)
+legend([Eplot, vstarplot, V_plot], 'Objective function $\mathcal{E}$','Global minimizer $v^*$','Particles $V_0^i$','Location','northwest','Interpreter','latex','FontSize',15)
 
 % plotting of error metrics (meanwhile)
 if errorplots_meanwhile
     subplot(1,2,2)
-    [errormetric_plot_J, errormetric_plot_V] = plot_errormetric(Metrics,T,dt,J,Variance);
-    
+    [errormetric_plot_Vstar, errormetric_plot_V] = plot_errormetric(T,dt,Vstar,Variance, semilogy_plot,normalized,lambda,d,sigma);
     ax = gca;
     ax.FontSize = 13;
+    
+    title('Decay behavior of $\mathrm{Var}(\widehat\rho^N_t)$ and $\mathcal{V}(\widehat\rho^N_t)$','Interpreter','latex','FontSize',18)
+
 end
 
 if savevideo
@@ -205,7 +199,7 @@ for k = 1:T/dt
     if errorplots_meanwhile
         subplot(1,2,1)
     end
-    title(sprintf("CBO at time t=%d",t),'Interpreter','latex','FontSize',16)
+    title(sprintf("CBO at time t=%d",t),'Interpreter','latex','FontSize',18)
     
     
     % % CBO iteration
@@ -236,27 +230,30 @@ for k = 1:T/dt
     valpha_plot = plot(v_alpha, E(v_alpha), '.', 'MarkerSize', 20, 'LineWidth', 1.8, "color", co(2,:));
     
     if show_expectation
-        legend([Eplot, Ecplot, vstarplot, V_plot, Expectation_plot, valpha_plot], 'Objective function $\mathcal{E}$','Convex envelope $\mathcal{E}^c$','Global minimizer $v^*$','Particles $V_t^i$', 'Average particle $\textbf{E}\overline{V}_t$', 'Consensus point $v_{\alpha}(\widehat\rho_t^N)$','Location','northwest','Interpreter','latex','FontSize',12)
+        legend([Eplot, vstarplot, V_plot, Expectation_plot, valpha_plot], 'Objective function $\mathcal{E}$','Global minimizer $v^*$','Particles $V_t^i$', 'Average particle $\textbf{E}\overline{V}_t$', 'Consensus point $v_{\alpha}(\widehat\rho_t^N)$','Location','northwest','Interpreter','latex','FontSize',15)
     else
-        legend([Eplot, Ecplot, vstarplot, V_plot, valpha_plot], 'Objective function $\mathcal{E}$','Convex envelope $\mathcal{E}^c$','Global minimizer $v^*$','Particles $V_t^i$', 'Consensus point $v_{\alpha}(\widehat\rho_t^N)$','Location','northwest','Interpreter','latex','FontSize',12)
+        legend([Eplot, vstarplot, V_plot, valpha_plot], 'Objective function $\mathcal{E}$','Global minimizer $v^*$','Particles $V_t^i$', 'Consensus point $v_{\alpha}(\widehat\rho_t^N)$','Location','northwest','Interpreter','latex','FontSize',15)
     end
     
     
     % % Computation of Error Metrics
-    % Functional J
-    J(k+1) = sum(interp1(convhull_x,convhull_y,V,'linear')-E(vstar))/N;
-    J(k+1) = J(k+1)/normal_J;
+    % Energy Functional V
+    Vstar(k+1) = 1/2*sum((V-vstar).^2)/N;
     % Variance
-    Variance(k+1) = sum((V-Expectation).^2)/N;
-    Variance(k+1) = Variance(k+1)/normal_V;
+    Variance(k+1) = 1/2*sum((V-Expectation).^2)/N;
+    
+    if normalized
+        Vstar(k+1) = Vstar(k+1)/normal_Vstar;
+        Variance(k+1) = Variance(k+1)/normal_V;
+    end
     
     
     % plotting of error metrics (meanwhile)
     if errorplots_meanwhile
-        delete(errormetric_plot_J)
+        delete(errormetric_plot_Vstar)
         delete(errormetric_plot_V)
         subplot(1,2,2)
-        [errormetric_plot_J, errormetric_plot_V] = plot_errormetric(Metrics,T,dt,J,Variance);
+        [errormetric_plot_Vstar, errormetric_plot_V] = plot_errormetric(T,dt,Vstar,Variance, semilogy_plot,normalized,lambda,d,sigma);
     end
     
     if savevideo
@@ -272,7 +269,7 @@ fprintf("final consensus point         : %d\n", v_alpha)
 % plotting of error metrics (afterwards)
 if ~errorplots_meanwhile
     figure('Position', [1700 800 500 400])
-    plot_errormetric(Metrics,T,dt,J,Variance);
+    plot_errormetric(T,dt,Vstar,Variance, semilogy_plot,normalized,lambda,d,sigma);
     
     ax = gca;
     ax.FontSize = 13;
@@ -295,30 +292,41 @@ end
 
 
 %% error metric plotting routine
-function [errormetric_plot_J, errormetric_plot_V] = plot_errormetric(Metrics,T,dt,J,Variance)
+function [errormetric_plot_Vstar, errormetric_plot_V] = plot_errormetric(T,dt,Vstar,Variance, semilogy_plot,normalized,lambda,d,sigma)
 co = set_color();
-if or(Metrics=="J",Metrics=="all")
-    errormetric_plot_J = plot(0:dt:T,J, "color", co(1,:), 'LineWidth', 2, 'LineStyle', '-');
-    hold on;
-end
-if Metrics=="all"
-    hold on;
-end
-if or(Metrics=="V",Metrics=="all")
-    errormetric_plot_V = plot(0:dt:T,Variance, "color", co(2,:), 'LineWidth', 2, 'LineStyle', '--');
-end
-xlim([0,T])
-ylim([0,1.5])
-xlabel('$t$','Interpreter','latex','FontSize',14)
-title('Decay behavior of $\mathcal{J}(\widehat\rho^N_t)$ and $\mathrm{Var}(\widehat\rho^N_t)$','Interpreter','latex','FontSize',16)
 
-if Metrics=="J"
-    legend('$\mathcal{J}(\widehat\rho^N_t)=\int(\mathcal{E}^c(v)-\underline{\mathcal{E}})d\rho^N_t(v)$','Interpreter','latex','FontSize',12)
-elseif Metrics=="V"
-    legend('$\mathrm{Var}(\widehat\rho^N_t)$','Interpreter','latex','FontSize',12)
+if ~semilogy_plot
+    errormetric_plot_V = plot(0:dt:T,Variance, "color", co(2,:), 'LineWidth', 2, 'LineStyle', '--');
+    hold on;
+    errormetric_plot_Vstar = plot(0:dt:T,Vstar, "color", co(1,:), 'LineWidth', 2, 'LineStyle', '-');
 else
-    legend('$\mathcal{J}(\widehat\rho^N_t)=\int(\mathcal{E}^c(v)-\underline{\mathcal{E}})d\widehat\rho^N_t(v)$','$\mathrm{Var}(\widehat\rho^N_t)$','Interpreter','latex','FontSize',12)
+    errormetric_plot_V = semilogy(0:dt:T,Variance, "color", co(2,:), 'LineWidth', 2, 'LineStyle', '--');
+    hold on;
+    errormetric_plot_Vstar = semilogy(0:dt:T,Vstar, "color", co(1,:), 'LineWidth', 2, 'LineStyle', '-');
 end
+if ~semilogy_plot
+    xlim([0,T])
+    ylim([0,1.5])
+else
+    xlim([0,T])
+    ylim([5*10^-3,2])
+end
+
+
+% rate of decay reference line (from theory)
+if ~semilogy_plot
+    decayrate = plot(0:dt:T,exp(-2*(lambda-d*sigma^2/2)*[0:dt:T]), "color", 0.4*[1,1,1], 'LineWidth', 2, 'LineStyle', ':');
+else
+    decayrate = semilogy(0:dt:T,exp(-2*(lambda-d*sigma^2/2)*[0:dt:T]), "color", 0.4*[1,1,1], 'LineWidth', 2, 'LineStyle', ':');
+end
+
+if ~normalized
+    legend([errormetric_plot_V, errormetric_plot_Vstar,decayrate], '$\mathrm{Var}(\widehat\rho^N_t)$','$\mathcal{V}(\widehat\rho^N_t)$','$\exp\!\big(\!-2(\lambda-d\sigma^2/2)\big)$','Interpreter','latex','FontSize',15)
+else
+    legend([errormetric_plot_V, errormetric_plot_Vstar,decayrate], '$\mathrm{Var}(\widehat\rho^N_t)/\mathrm{Var}(\rho_0)$','$\mathcal{V}(\widehat\rho^N_t)/\mathcal{V}(\rho_0)$','$\exp\!\big(\!-(2\lambda-d\sigma^2)t\big)$','Interpreter','latex','FontSize',15)
+end
+xlabel('$t$','Interpreter','latex','FontSize',14)
+
 end
 
 

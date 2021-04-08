@@ -1,9 +1,9 @@
-# CEBasedCBOAnalysis
-Numerical illustration of a convex envelope based analysis framework for consensus based optimization
+# EnergyBasedCBOAnalysis
+Numerical illustration of a novel analysis framework for consensus based optimization
 
-Version 1.0
+Version 2.0
 
-Date 30.03.2021
+Date 04.04.2021
 
 ------
 
@@ -17,14 +17,12 @@ by
 - Timo &nbsp; K l o c k &nbsp; (Simula Research Laboratory & University of San Diego),
 - Konstantin &nbsp; R i e d l &nbsp; (Technical University of Munich)
 
-https://arxiv.org/abs/2103.15130
-
 ------
 
 ## D e s c r i p t i o n
 
-MATLAB implementation illustrating CBO and the intuition behind our convex
-envelope based global convergence analysis approach.
+MATLAB implementation illustrating CBO and the intuition behind our novel
+global convergence analysis approach.
 
 For the reader's convenience we group the MATLAB scripts into five different
 categories:
@@ -35,14 +33,14 @@ Visualization of the objective functions
 
 CBO illustration
 - CBOIllustrative.m
-- DecayComparison_JandVar.m
+- DecayComparison_VandVar.m
 
 CBO intuition
 - CBOIntuition_averageparticle.m
 
-Comparison of our functional J with variance of particles
-- DecayComparison_JandVar.m
-- DecayComparison_JandVar_differentV0.m
+Comparison of our functional V with variance of particles Var
+- DecayComparison_VandVar.m
+- DecayComparison_VandVar_differentV0.m
 
 Further material
 - AlternativeDynamics.m

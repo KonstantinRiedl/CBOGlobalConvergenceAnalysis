@@ -1,7 +1,7 @@
 % Objective function plot 1d
 %
 % This script produces plots of the objective function E in 1d together 
-% with the global minimizer and the convex envelope Ec of the function E.
+% with the global minimizer and the squared Euclidean norm distance.
 % Such plot is used in Figure 2(a).
 %
 
@@ -19,7 +19,7 @@ pdfexport = 0;
 %% Energy Function E
 
 % % dimension of the ambient space
-d = 1; % only 1d due to the convex envelope computation and plotting
+d = 1;
 
 % % energy function E
 % (E is a function mapping columnwise from R^{d\times N} to R)
@@ -35,18 +35,6 @@ xrange = 100*xrange_plot;
 vstar = 0; %fminbnd(E,xrange_plot(1),xrange_plot(2));
 
 
-%% Convex Envelope Ec of E
-
-% % computation of the convex hull of the energy function E
-% we exploit the relationship between convex functions and their epigraphs
-convhull_dom = linspace(xrange(1), xrange(2), 10^6);
-Ec = [convhull_dom; E(convhull_dom)]';
-[indices,~] = convhull(Ec);
-
-convhull_x = Ec(indices,1); convhull_x(end) = [];
-convhull_y = Ec(indices,2); convhull_y(end) = [];
-
-
 
 %% Plotting
 
@@ -58,8 +46,8 @@ set(groot,'defaultLegendInterpreter','latex');
 f = figure('Position', [1200 800 400 400]);
 
 
-% % plotting convex envelope of E
-Ecplot = plot(convhull_x, convhull_y, "color", co(6,:), 'LineWidth', 2, 'LineStyle', '--');
+% % plotting squared Euclidean distance to v^*
+sqEuclidNorm = plot([xrange_plot(1):0.0001:xrange_plot(2)], [xrange_plot(1):0.0001:xrange_plot(2)].^2, "color", co(6,:), 'LineWidth', 2, 'LineStyle', '--');
 hold on
 % % plotting energy function E
 Eplot = fplot(E, xrange_plot, "color", co(1,:), 'LineWidth', 2);
@@ -73,7 +61,9 @@ hold on
 % % plot global minimizer of energy function E
 vstarplot = plot(vstar, E(vstar), '*', 'MarkerSize', 10, 'LineWidth', 1.8, "color", co(5,:));
 
-legend([Eplot, Ecplot, vstarplot], 'Objective function $\mathcal{E}$','Convex envelope $\mathcal{E}^c$','Global minimizer $v^*$','Location','northwest','Interpreter','latex','FontSize',15)
+%legend([Eplot, sqEuclidNorm, vstarplot], 'Objective function $\mathcal{E}$','$v\mapsto\frac{1}{2}\|v-v^*\|_2^2$','Global minimizer $v^*$','Location','northwest','Interpreter','latex','FontSize',15)
+legend([Eplot, sqEuclidNorm, vstarplot], 'Objective function $\mathcal{E}$','Squared norm distance from $v^*$','Global minimizer $v^*$','Location','northwest','Interpreter','latex','FontSize',15)
+
 
 ax = gca;
 ax.FontSize = 13;

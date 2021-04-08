@@ -1,8 +1,7 @@
 % Objective function plot 2d
 %
 % This script produces plots of the objective function E in 2d together 
-% with the global minimizer and, in case of the Rastrigin test function, 
-% the convex envelope Ec of the function E is optional.
+% with the global minimizer.
 %
 
 %%
@@ -16,7 +15,7 @@ co = set_color();
 pdfexport = 0;
 
 % plot convex envelope in case of Rastrigin function
-envelopeplot = 0;
+sqEuclildDist = 1;
 
 
 %% Energy Function E
@@ -78,7 +77,7 @@ if strcmp(objectivefunction,'Rastrigin')
     ZZ = Ec(XY);
     ZZ = reshape(ZZ,size(X));
     
-    if envelopeplot
+    if sqEuclildDist
         Ecplot = surf(X,Y,ZZ,'FaceAlpha',0.35);
         Ecplot.EdgeColor = 'None';
         hold on

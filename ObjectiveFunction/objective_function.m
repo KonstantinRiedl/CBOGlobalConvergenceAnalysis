@@ -57,6 +57,7 @@ elseif d == 2
                                               {   [4;6],      8});
 else
     parametersCBO = [];
+    parametersInitialization = [];
 end
 
 if strcmp(name,'Ackley')
