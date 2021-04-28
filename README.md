@@ -47,3 +47,4 @@ Comparison of our functional V with variance of particles Var
 Further material
 - AlternativeDynamics.m
 - DdeltaEstimation.m
+- Proposition19.m
