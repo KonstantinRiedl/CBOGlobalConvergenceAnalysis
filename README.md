@@ -1,5 +1,5 @@
 # EnergyBasedCBOAnalysis
-Numerical illustration of a novel analysis framework for consensus based optimization
+Numerical illustration of a novel analysis framework for consensus-based optimization
 
 Version 2.0
 
