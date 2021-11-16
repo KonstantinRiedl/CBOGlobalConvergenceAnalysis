@@ -40,12 +40,6 @@ BenchmarkFunctions
 * ObjectiveFunctionPlot1/2d.m: plotting routine for objective function
 
 EnergyBasedCBOAnalysis
-* analyses: convergence and parameter analyses of CBO
-    * CBOIntuition_averageparticle.m: Intuition behind our global convergence analysis: CBO always performs a gradient descent of the squared Euclidean distance to the global minimizer
-    * CBOParameters_PhaseTransition.m: Phase transition diagrams for parameter analysis
-    * DecayComparison_V_anisotropicandisotropic_differentd.m: Comparison of the decay behavior of isotropic and anisotropic CBO in different dimensions
-    * DecayComparison_VandVar_an_isotropic_differentd.m: Comparison of the decay behavior of the functional V and the variance Var for isotropic or anisotropic CBO  in different dimensions
-    * DecayComparison_VandVar_differentV0.m: Comparison of the decay behavior of the functional V and the variance Var for different initial conditions for isotropic or anisotropic CBO
 * CBO: code of CBO optimizer
     * compute_valpha.m: computation of consensus point
     * CBO_update: one CBO step
@@ -55,6 +49,12 @@ EnergyBasedCBOAnalysis
     * CBODynamicsIllustration.m: Illustration of the CBO dynamics
     * CBOIllustrative.m: Illustration of the CBO at work
     * DecayComparison_VandVar.m: Illustration of the different decay behavior of the functional V and the variance Var
+* analyses: convergence and parameter analyses of CBO
+    * CBOIntuition_averageparticle.m: Intuition behind our global convergence analysis: __CBO always performs a gradient descent of the squared Euclidean distance to the global minimizer__
+    * CBOParameters_PhaseTransition.m: Phase transition diagrams for parameter analysis
+    * DecayComparison_V_anisotropicandisotropic_differentd.m: Comparison of the decay behavior of isotropic and anisotropic CBO in different dimensions
+    * DecayComparison_VandVar_an_isotropic_differentd.m: Comparison of the decay behavior of the functional V and the variance Var for isotropic or anisotropic CBO  in different dimensions
+    * DecayComparison_VandVar_differentV0.m: Comparison of the decay behavior of the functional V and the variance Var for different initial conditions for isotropic or anisotropic CBO
 
 NN: machine learning experiments with CBO as optimization method for training
 * architecture
