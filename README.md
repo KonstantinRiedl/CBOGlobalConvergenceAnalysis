@@ -19,7 +19,7 @@ and
 
 ### Convergence of Anisotropic Consensus-Based Optimization in Mean-Field Law
 
-https://arxiv.org/abs/2111.XXXXX
+https://arxiv.org/abs/2111.08136
 
 by
 
@@ -61,7 +61,7 @@ NN: machine learning experiments with CBO as optimization method for training
     * NN.m: forward pass of NN
     * eval_accuracy.m: evaluate training or test accuracy
     * comp_performance.m: compute and display loss and training or test accuracy
-* data: data (not included) and function to load data
+* data: data and function to load data
 * Scripts_for_CBO
     * MNISTClassificationCBO.m: script training the NN for MNIST with CBO
 
@@ -80,6 +80,6 @@ NN: machine learning experiments with CBO as optimization method for training
       title = {Convergence of Anisotropic Consensus-Based Optimization in Mean-Field Law},
      author = {Massimo Fornasier and Timo Klock and Konstantin Riedl},
        year = {2021},
-    journal = {arXiv preprint arXiv:2111.XXXXX},
+    journal = {arXiv preprint arXiv:2111.08136},
 }
 ```
