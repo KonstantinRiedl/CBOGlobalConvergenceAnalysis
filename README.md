@@ -50,7 +50,7 @@ EnergyBasedCBOAnalysis
     * CBOIllustrative.m: Illustration of the CBO at work
     * DecayComparison_VandVar.m: Illustration of the different decay behavior of the functional V and the variance Var
 * analyses: convergence and parameter analyses of CBO
-    * CBOIntuition_averageparticle.m: Intuition behind our global convergence analysis: __CBO always performs a gradient descent of the squared Euclidean distance to the global minimizer__
+    * CBOIntuition_averageparticle.m: Intuition behind our global convergence analysis: _CBO always performs a gradient descent of the squared Euclidean distance to the global minimizer_
     * CBOParameters_PhaseTransition.m: Phase transition diagrams for parameter analysis
     * DecayComparison_V_anisotropicandisotropic_differentd.m: Comparison of the decay behavior of isotropic and anisotropic CBO in different dimensions
     * DecayComparison_VandVar_an_isotropic_differentd.m: Comparison of the decay behavior of the functional V and the variance Var for isotropic or anisotropic CBO  in different dimensions
