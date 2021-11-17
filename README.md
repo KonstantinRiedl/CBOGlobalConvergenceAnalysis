@@ -19,7 +19,7 @@ and
 
 ### Convergence of Anisotropic Consensus-Based Optimization in Mean-Field Law
 
-https://arxiv.org/abs/2111.XXXXX
+https://arxiv.org/abs/2111.08136
 
 by
 
@@ -40,6 +40,12 @@ BenchmarkFunctions
 * ObjectiveFunctionPlot1/2d.m: plotting routine for objective function
 
 EnergyBasedCBOAnalysis
+* analyses: convergence and parameter analyses of CBO
+    * CBOIntuition_averageparticle.m: Intuition behind our global convergence analysis: CBO always performs a gradient descent of the squared Euclidean distance to the global minimizer
+    * CBOParameters_PhaseTransition.m: Phase transition diagrams for parameter analysis
+    * DecayComparison_V_anisotropicandisotropic_differentd.m: Comparison of the decay behavior of isotropic and anisotropic CBO in different dimensions
+    * DecayComparison_VandVar_an_isotropic_differentd.m: Comparison of the decay behavior of the functional V and the variance Var for isotropic or anisotropic CBO  in different dimensions
+    * DecayComparison_VandVar_differentV0.m: Comparison of the decay behavior of the functional V and the variance Var for different initial conditions for isotropic or anisotropic CBO
 * CBO: code of CBO optimizer
     * compute_valpha.m: computation of consensus point
     * CBO_update: one CBO step
@@ -49,19 +55,13 @@ EnergyBasedCBOAnalysis
     * CBODynamicsIllustration.m: Illustration of the CBO dynamics
     * CBOIllustrative.m: Illustration of the CBO at work
     * DecayComparison_VandVar.m: Illustration of the different decay behavior of the functional V and the variance Var
-* analyses: convergence and parameter analyses of CBO
-    * CBOIntuition_averageparticle.m: Intuition behind our global convergence analysis: _CBO always performs a gradient descent of the squared Euclidean distance to the global minimizer_
-    * CBOParameters_PhaseTransition.m: Phase transition diagrams for parameter analysis
-    * DecayComparison_V_anisotropicandisotropic_differentd.m: Comparison of the decay behavior of isotropic and anisotropic CBO in different dimensions
-    * DecayComparison_VandVar_an_isotropic_differentd.m: Comparison of the decay behavior of the functional V and the variance Var for isotropic or anisotropic CBO  in different dimensions
-    * DecayComparison_VandVar_differentV0.m: Comparison of the decay behavior of the functional V and the variance Var for different initial conditions for isotropic or anisotropic CBO
 
 NN: machine learning experiments with CBO as optimization method for training
 * architecture
     * NN.m: forward pass of NN
     * eval_accuracy.m: evaluate training or test accuracy
     * comp_performance.m: compute and display loss and training or test accuracy
-* data: data (not included) and function to load data
+* data: data and function to load data
 * Scripts_for_CBO
     * MNISTClassificationCBO.m: script training the NN for MNIST with CBO
 
@@ -80,6 +80,6 @@ NN: machine learning experiments with CBO as optimization method for training
       title = {Convergence of Anisotropic Consensus-Based Optimization in Mean-Field Law},
      author = {Massimo Fornasier and Timo Klock and Konstantin Riedl},
        year = {2021},
-    journal = {arXiv preprint arXiv:2111.XXXXX},
+    journal = {arXiv preprint arXiv:2111.08136},
 }
 ```
