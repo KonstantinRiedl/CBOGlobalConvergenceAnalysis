@@ -29,7 +29,7 @@
 function [train_accuracy, test_accuracy, objective_value] = comp_performance(E, V, train_data, test_data, image_size, train_label, test_label, NNtype, architecture, neurons, alg_state, verbose, worker)
 
 E_train = @(x) E(x, train_data, train_label);
-v_alpha = compute_yalpha(E_train, 10^15, V);
+v_alpha = compute_valpha(E_train, 10^15, V);
 
 objective_value = E_train(v_alpha);
 train_accuracy = eval_accuracy(v_alpha, train_data, image_size, train_label, NNtype, architecture, neurons);
