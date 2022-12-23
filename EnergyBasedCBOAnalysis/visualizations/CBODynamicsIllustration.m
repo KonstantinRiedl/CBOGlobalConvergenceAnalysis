@@ -23,9 +23,9 @@ f = figure('Position', [1200 800 600 240]);
 d = 2;
 
 % % energy function E
-% (E is a function mapping columnwise from R^{d\times N} to R)
+% (E is a function mapping columnwise from R^{d\times N} to R)^N
 objectivefunction = 'Rastrigin';
-[E, ~, ~, ~] = objective_function(objectivefunction, d, 'CBO');
+[E, ~, ~, ~, ~] = objective_function(objectivefunction, d, 'CBO');
 
 
 %% Parameters of CBO Algorithm
@@ -40,14 +40,14 @@ N_other = 14;
 
 % lambda (parameter of consensus drift term)
 lambda = 1;
-% gamma (parameter of gradient drift term)
-gamma = 0;
-learning_rate = 0.01;
 % type of diffusion
 anisotropic = 0;
 % sigma (parameter of exploration term)
-sigma = 0.16;
-
+if anisotropic==0
+    sigma = 0.16;
+else
+    sigma = 0.24;
+end
 
 %% Plotting
 
@@ -61,6 +61,7 @@ else
     error('Wrong N.')
 end
 V_other = [[0.21;0.11], randn(2,N_other-1)+[1;0.8]];
+load([main_folder(),'/EnergyBasedCBOAnalysis/visualizations/CBODynamicsIllustration_V_other.mat'])
 
 % % 
 % v_star
@@ -68,9 +69,8 @@ v_star = [0; 0];
 p_v_star = plot(v_star(1), v_star(2), '*', 'MarkerSize', 12, 'LineWidth', 1.8, "color", co(5,:)); hold on
 
 % v_alpha
-alpha = 100;
+alpha = 7;
 v_alpha = compute_valpha(E,alpha,[V,V_other]);
-p_v_alpha = plot(v_alpha(1), v_alpha(2), '.', 'MarkerSize', 20, 'LineWidth', 1.8, "color", co(2,:));
 
 
 % direction through diffusion term
@@ -96,7 +96,7 @@ end
 
 base_opacity = 0.2;
 for n=1:N
-    V_plot = scatter(V(1,:), V(2,:), 50, "MarkerFaceColor", co(3,:), "MarkerEdgeColor", co(3,:)); hold on
+    V_plot = scatter(V(1,n), V(2,n), 50, "MarkerFaceColor", co(3,:), "MarkerEdgeColor", co(3,:)); hold on
     V_plot.MarkerFaceAlpha = base_opacity+(1-base_opacity)./(E(V(:,n))/min(E([V, V_other])));
     V_plot.MarkerEdgeAlpha = 0;
 end
@@ -116,6 +116,7 @@ set(gca,'xtick',[]); set(gca,'ytick',[]);
 set(groot,'defaultAxesTickLabelInterpreter','latex'); 
 
 V_plot = scatter(-10, -10, 50, "MarkerFaceColor", co(3,:), "MarkerEdgeColor", co(3,:)); hold on
+%legend([p_v_star, V_plot], 'Global minimizer $v^*$', 'Particles $V_t^i$','Location','southeast','Interpreter','latex','FontSize',12)
 legend([p_v_star, V_plot, p_v_alpha], 'Global minimizer $v^*$', 'Particles $V_t^i$', 'Consensus point $v_{\alpha}(\widehat\rho^N_t)$','Location','southeast','Interpreter','latex','FontSize',12)
 
 ax = gca;
@@ -125,8 +126,8 @@ ax.FontSize = 15;
 %% Save Image
 if pdfexport
     if anisotropic
-        print(f,['CBOandPSO/EnergyBasedCBOAnalysis/images_videos/CBODynamicsIllustration_anisotropic'],'-dpdf');
+        print(f,[main_folder(),'/EnergyBasedCBOAnalysis/images_videos/CBODynamicsIllustration_anisotropic'],'-dpdf');
     else
-        print(f,['CBOandPSO/EnergyBasedCBOAnalysis/images_videos/CBODynamicsIllustration_isotropic'],'-dpdf');
+        print(f,[main_folder(),'/EnergyBasedCBOAnalysis/images_videos/CBODynamicsIllustration_isotropic'],'-dpdf');
     end
 end

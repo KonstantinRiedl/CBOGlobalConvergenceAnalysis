@@ -23,7 +23,7 @@ d = 1;
 % % energy function E
 % (E is a function mapping columnwise from R^{d\times N} to R)
 objectivefunction = 'Rastrigin';
-[E, parametersE, parametersCBO] = objective_function(objectivefunction, d);
+[E, ~, parametersE, parametersCBO] = objective_function(objectivefunction, d);
 
 % range of x (and x and y for plotting)
 xrange_plot = parametersE(:,1)';
@@ -75,9 +75,9 @@ if pdfexport
     %cleanfigure;
     %matlab2tikz('myfile.tex');
 
-    print(f,['CBOandPSO/EnergyBasedCBOAnalysis/images_videos/ObjectiveFunction_',objectivefunction],'-dpdf');
+    print(f,[main_folder(),'/EnergyBasedCBOAnalysis/images_videos/ObjectiveFunction_',objectivefunction],'-dpdf');
 
     % save parameters
-    save(['CBOandPSO/EnergyBasedCBOAnalysis/images_videos/ObjectiveFunction_',objectivefunction,'_param'], 'objectivefunction', 'E', 'vstar', 'd')
+    save([main_folder(),'/EnergyBasedCBOAnalysis/images_videos/ObjectiveFunction_',objectivefunction,'_param'], 'objectivefunction', 'E', 'vstar', 'd')
 
 end

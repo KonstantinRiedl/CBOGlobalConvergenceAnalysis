@@ -19,12 +19,12 @@ pre_setparameters = 0;
 %% Energy Function E
 
 % % dimension of the ambient space
-d = 20;
+d = 4;
 
 % % energy function E
-% (E is a function mapping columnwise from R^{d\times N} to R)
+% (E is a function mapping columnwise from R^{d\times N} to R^N)
 objectivefunction = 'Rastrigin';
-[E, parametersE, parametersCBO, parametersInitialization] = objective_function(objectivefunction, d, 'CBO');
+[E, grad_E, parametersE, parametersCBO, parametersInitialization] = objective_function(objectivefunction, d, 'CBO');
 
 % global minimizer
 vstar = zeros(d,1); %fminbnd(E,xrange_plot(1),xrange_plot(2));
@@ -33,7 +33,7 @@ vstar = zeros(d,1); %fminbnd(E,xrange_plot(1),xrange_plot(2));
 %% Parameters of CBO Algorithm
 
 % time horizon
-T = 20;
+T = 10;
 
 % discrete time size
 dt = 0.01;
@@ -49,14 +49,14 @@ learning_rate = 0.01;
 % type of diffusion
 anisotropic = 1;
 % sigma (parameter of exploration term)
-sigma = 8;
+sigma = sqrt(1.6);
 
 % alpha (weight in Gibbs measure for consensus point computation)
-alpha = 100;
+alpha = 1000;
 
 
 %% Initialization
-V0mean = 2*ones(d,1);
+V0mean = 4*ones(d,1);
 V0std = 4;
 
 
@@ -87,7 +87,7 @@ V0 = V0mean+V0std*randn(d,N);
 V = V0;
 
 % CBO
-[vstar_app] = CBO(E, parametersCBO, V0);
+[vstar_app] = CBO(E, grad_E, parametersCBO, V0);
 
 fmtvstar     = ['global minimizer (numerically): [', repmat('%g, ', 1, numel(vstar)-1), '%g]\n'];
 fprintf(fmtvstar, vstar)

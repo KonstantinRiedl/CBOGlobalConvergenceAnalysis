@@ -2,6 +2,8 @@ function [vstar_approx, performance_tracking] = CBOmachinelearning(parametersCBO
 
 % get parameters
 epochs = parametersCBO('epochs');
+sigma_initial = parametersCBO('sigma');
+alpha_initial = parametersCBO('alpha');
 batch_size_N = parametersbatch('batch_size_N');
 batch_size_E = parametersbatch('batch_size_E');
 full_or_partial_V_update = parametersbatch('full_or_partial_V_update');
@@ -17,7 +19,6 @@ V0 = parametersInitialization('V0mean') + parametersInitialization('V0std')*rand
 V = V0;
 v_alpha_on_batch_old = zeros(d,1);
 
-
 % % definition of the risk (objective function E)
 % predicted and true label
 predicted_label = @(x, data) NN(x, data, image_size, NNtype, architecture, neurons);
@@ -31,7 +32,7 @@ E = @(x, data, label) 1/size(data, 2)*sum(categ_CE_loss(x, data, label),1);
 % performance tracking during training
 training_batches_per_epoch = size(train_data,2)/batch_size_E;
 recording_sample_size = 10000;
-recording_frequency = 100; % ensure that recording_frequency divides training_batches_per_epoch
+recording_frequency = 500; % ensure that recording_frequency divides training_batches_per_epoch
 performance_tracking = NaN(3, epochs+1, training_batches_per_epoch/recording_frequency);
 
 
@@ -86,10 +87,10 @@ for epoch = 1:epochs
 
             % position updates of one iteration of CBO
             if strcmp(full_or_partial_V_update, 'partial')
-                V_particle_batch = CBO_update(E_train_batch, parametersCBO, v_alpha_on_batch, V_particle_batch);
+                V_particle_batch = CBO_update(E_train_batch, @(v) nan, parametersCBO, v_alpha_on_batch, V_particle_batch);
                 V(:,indices_p_b) = V_particle_batch;
             elseif strcmp(full_or_partial_V_update, 'full')
-                V = CBO_update(E_train_batch, parametersCBO, v_alpha_on_batch, V);
+                V = CBO_update(E_train_batch, @(v) nan, parametersCBO, v_alpha_on_batch, V);
             else
                 error('full_or_partial_V_update type not known.')
             end
@@ -137,6 +138,7 @@ for epoch = 1:epochs
         end
     end
     
+    
     % employ optional and cooling strategy (CS) 
     parameter_cooling = parametersCBO('parameter_cooling');
     if parameter_cooling
@@ -156,16 +158,17 @@ for epoch = 1:epochs
         error('NNtype does not exist')
     end
     if nargin==10
-        filename = ['CBOandPSO/NN/results/CBO/', NNtype_save, '/', 'CBOMNIST_worker', num2str(worker), '_', datestr(datetime('today')), 'N', num2str(parametersCBO('N')),'_preliminary'];
+        filename = ['CBOandPSO/NN/results/CBO/', NNtype_save, '/', 'CBOMNIST_worker', num2str(worker), '_N_', num2str(parametersCBO('N')), '_nN_', num2str(batch_size_N), '_sigma**2_0,', num2str(10*round(sigma_initial^2,1)), '_alpha_', num2str(alpha_initial), '_parametercooling_', num2str(parameter_cooling), '_', num2str(epochs), 'epochs','_preliminary'];
     else
-        filename = ['CBOandPSO/NN/results/CBO/', NNtype_save, '/', 'CBOMNIST', '_', datestr(datetime('today')), 'N', num2str(parametersCBO('N')), '_preliminary'];
+        filename = ['CBOandPSO/NN/results/CBO/', NNtype_save, '/', 'CBOMNIST', '_N_', num2str(parametersCBO('N')), '_nN_', num2str(batch_size_N), '_sigma**2_0,', num2str(10*round(sigma_initial^2,1)), '_alpha_', num2str(alpha_initial), '_parametercooling_', num2str(parameter_cooling), '_', num2str(epochs), 'epochs', '_preliminary'];
     end
     parsave_CBO(filename, v_alpha_on_batch_old, performance_tracking, image_size, NN_architecture, NNtype, architecture, neurons, d, epochs, parametersCBO('dt'), parametersCBO('N'), parametersCBO('alpha'), parametersCBO('lambda'), parametersCBO('gamma'), parametersCBO('learning_rate'), parametersCBO('anisotropic'), parametersCBO('sigma'), particle_reduction, parameter_cooling, batch_size_N, batch_size_E, full_or_partial_V_update, parametersInitialization('V0mean'), parametersInitialization('V0std'))
     
 end
   
-E_train = @(x) E(x, train_data, train_label);
-vstar_approx = compute_valpha(E_train, parametersCBO('alpha'), V);
+vstar_approx = nan;
+%E_train = @(x) E(x, train_data, train_label);
+%vstar_approx = compute_valpha(E_train, parametersCBO('alpha'), V);
 
 % saving final results and parameters
 if strcmp(NNtype, 'fully_connected') && length(architecture)==1
@@ -178,9 +181,9 @@ else
     error('NNtype does not exist')
 end
 if nargin==10
-    filename = ['CBOandPSO/NN/results/CBO/', NNtype_save, '/', 'CBOMNIST_worker', num2str(worker), '_', datestr(datetime('today')), 'N', num2str(parametersCBO('N')), '_final'];
+    filename = ['CBOandPSO/NN/results/CBO/', NNtype_save, '/', 'CBOMNIST_worker', num2str(worker), '_N_', num2str(parametersCBO('N')), '_nN_', num2str(batch_size_N), '_sigma**2_0,', num2str(10*round(sigma_initial^2,1)), '_alpha_', num2str(alpha_initial), '_parametercooling_', num2str(parameter_cooling), '_', num2str(epochs), 'epochs', '_final'];
 else
-    filename = ['CBOandPSO/NN/results/CBO/', NNtype_save, '/', 'CBOMNIST', '_', datestr(datetime('today')), 'N', num2str(parametersCBO('N')), '_final'];
+    filename = ['CBOandPSO/NN/results/CBO/', NNtype_save, '/', 'CBOMNIST', '_N_', num2str(parametersCBO('N')), '_nN_', num2str(batch_size_N), '_sigma**2_0,', num2str(10*round(sigma_initial^2,1)), '_alpha_', num2str(alpha_initial), '_parametercooling_', num2str(parameter_cooling), '_', num2str(epochs), 'epochs', '_final'];
 end
 parsave_CBO(filename, vstar_approx, performance_tracking, image_size, NN_architecture, NNtype, architecture, neurons, d, epochs, parametersCBO('dt'), parametersCBO('N'), parametersCBO('alpha'), parametersCBO('lambda'), parametersCBO('gamma'), parametersCBO('learning_rate'), parametersCBO('anisotropic'), parametersCBO('sigma'), particle_reduction, parameter_cooling, batch_size_N, batch_size_E, full_or_partial_V_update, parametersInitialization('V0mean'), parametersInitialization('V0std'))
 

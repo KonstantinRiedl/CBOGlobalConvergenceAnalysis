@@ -3,9 +3,10 @@
 % This function performs CBO.
 % 
 % 
-% [vstar_approx] = CBO(E, parametersCBO, V0)
+% [vstar_approx] = CBO(E, grad_E, parametersCBO, V0)
 % 
 % input:    E             = objective function E (as anonymous function)
+%           grad_E        = gradient of objective function E (as anonymous function)
 %           parametersCBO = suitable parameters for CBO
 %                         = [T, dt, N, lambda, gamma, learning_rate, sigma, alpha]
 %               - T       = time horizon
@@ -21,23 +22,24 @@
 % output:   vstar_approx  = approximation to vstar
 %
 
-function [vstar_approx] = CBO(E, parametersCBO, V0)
+function [vstar_approx] = CBO(E, grad_E, parametersCBO, V0)
 
 % get parameters
 T = parametersCBO('T');
 dt = parametersCBO('dt');
 alpha = parametersCBO('alpha');
-anisotropic = parametersCBO('anisotropic');
+% anisotropic = parametersCBO('anisotropic');
 
 % initialization
 V = V0;
 
-% CBO
-if anisotropic
-	disp('CBO with ANisotropic diffusion used.')
-else
-	disp('CBO with isotropic diffusion used.')
-end
+% % CBO
+% if anisotropic
+% 	disp('CBO with ANisotropic diffusion used.')
+% else
+% 	disp('CBO with isotropic diffusion used.')
+% end
+
 for k = 1:T/dt
     
     % % CBO iteration
@@ -45,7 +47,7 @@ for k = 1:T/dt
     v_alpha = compute_valpha(E, alpha, V);
 
     % position updates of one iteration of CBO
-    V = CBO_update(E, parametersCBO, v_alpha, V);
+    V = CBO_update(E, grad_E, parametersCBO, v_alpha, V);
     
 end
 

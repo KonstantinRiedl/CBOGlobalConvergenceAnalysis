@@ -1,7 +1,7 @@
 % MNIST Classification with CBO
 %
 % This script implements the framework for training a neural network 
-% classifier (shallow NN, deep NN, CNN) for MNIST classification using CBO.
+% classifier (shallow NN, deep NN, CNN) for MNIST classification using PSO.
 %
 
 %%
@@ -46,7 +46,7 @@ NN_architecture = containers.Map({'NNtype', 'architecture', 'neurons', 'd'},...
 %% Parameters of CBO Algorithm
 
 % number of epochs
-epochs = 4;
+epochs = 100;
 
 % discrete time size
 dt = 0.1;

@@ -17,23 +17,38 @@ function plot_loss_and_testing_accuracy_CBO()
 number_of_architectures = 2;
 number_of_parametersettings = 1; % needs to be consistent with the number of loaded settings
 
-epochs_plot = 100;
+N_nN = 'N_100_nN_10'; % N_100_nN_10, N_100_nN_100, N_1000_nN_100
+testing_or_training_accuracy = 'testing'; % training, testing
+
+if strcmp(N_nN, 'N_100_nN_10') || strcmp(N_nN, 'N_100_nN_100')
+    epochs_plot = 100;
+elseif strcmp(N_nN, 'N_1000_nN_100')
+    epochs_plot = 10;
+else
+    error('epochs_plot has to be specified manually')
+end
 batches_per_epoch = 1; % needs to be a common divisor (2,5,10) of the individual batches_per_epoch if any
 
 performance_tracking_all = nan(number_of_architectures,number_of_parametersettings,3,epochs_plot+1,batches_per_epoch);
 
 
 % load shallow NN data
-load('CBOandPSO/NN/results/CBO/ShallowNN/CBOMNIST_N_100_nN_10_sigma**2_0,4_alpha_50_parametercooling_1_100epochs.mat') % N=100, nN=10,  epochs=100
-%load('CBOandPSO/NN/results/CBO/ShallowNN/CBOMNIST_N_100_nN_100_sigma**2_0,4_alpha_20_parametercooling_1_100epochs.mat') % N=100, nN=100,  epochs=100
-%load('CBOandPSO/NN/results/CBO/ShallowNN/CBOMNIST_N_1000_nN_100_sigma**2_0,1_alpha_50_parametercooling_1_20epochs.mat') % N=1000, nN=100, epochs=10
+if epochs_plot == 100
+    load([main_folder(),'/Example_NN/results/CBO/ShallowNN/CBOMNIST_', N_nN, '_sigma**2_0,4_alpha_50_parametercooling_1_100epochs_1.mat'])
+elseif epochs_plot == 10
+    load([main_folder(),'/Example_NN/results/CBO/ShallowNN/CBOMNIST_', N_nN, '_sigma**2_0,4_alpha_50_parametercooling_1_20epochs_1.mat'])
+else
+end
 performance_tracking = performance_tracking(:,:,linspace(size(performance_tracking,3)/batches_per_epoch,size(performance_tracking,3),batches_per_epoch));
 performance_tracking_all(2,1,:,1:(epochs+1),:) = performance_tracking;
 
 % load CNN data
-load('CBOandPSO/NN/results/CBO/CNN/CBOMNIST_N_100_nN_10_sigma**2_0,4_alpha_50_parametercooling_1_100epochs.mat') % N=100, nN=10, epochs=100
-%load('CBOandPSO/NN/results/CBO/CNN/CBOMNIST_N_100_nN_100_sigma**2_0,4_alpha_50_parametercooling_1_100epochs.mat') % N=100, nN=100, epochs=100
-%load('CBOandPSO/NN/results/CBO/CNN/CBOMNIST_N_1000_nE_100_sigma**2_0,4_alpha_50_parametercooling_1_10epochs.mat') % N=1000, nN=100, epochs=10
+if epochs_plot == 100
+    load([main_folder(),'/Example_NN/results/CBO/CNN/CBOMNIST_', N_nN, '_sigma**2_0,4_alpha_50_parametercooling_1_100epochs_1.mat'])
+elseif epochs_plot == 10
+    load([main_folder(),'/Example_NN/results/CBO/CNN/CBOMNIST_', N_nN, '_sigma**2_0,4_alpha_50_parametercooling_1_10epochs_1.mat'])
+else
+end
 performance_tracking = performance_tracking(:,:,linspace(size(performance_tracking,3)/batches_per_epoch,size(performance_tracking,3),batches_per_epoch));
 performance_tracking_all(1,1,:,1:(epochs+1),:) = performance_tracking;
 
@@ -86,12 +101,23 @@ for k=1:number_of_architectures
         end
 
         yyaxis right
-        % plot testing accuracy 
-        kk((k-1)*3+1) = plot(epoch_batch_discretization, performance_tracking_k(2,:), 'LineWidth', 2, 'LineStyle', line_style, 'Color', [accuracy_color, line_opacity], 'Marker', 'none'); hold on
+        % plot testing or training accuracy 
+        if strcmp(testing_or_training_accuracy, 'testing')
+            testing_or_training_index = 2;
+        elseif strcmp(testing_or_training_accuracy, 'training')
+            testing_or_training_index = 1;
+        else
+            error('testing_or_training_accuracy not known.')
+        end
+        kk((k-1)*3+1) = plot(epoch_batch_discretization, performance_tracking_k(testing_or_training_index,:), 'LineWidth', 2, 'LineStyle', line_style, 'Color', [accuracy_color, line_opacity], 'Marker', 'none'); hold on
         %plot(epoch_discretization, performance_tracking_epoch(1,:), 'LineStyle', '-', 'LineWidth', 2, 'Color', co(1,:)); hold on
 
         xlabel('number of epochs','Interpreter','latex','FontSize',15)
-        ylabel('testing accuracy','Interpreter','latex','FontSize',15)
+        if strcmp(testing_or_training_accuracy, 'testing')
+            ylabel('testing accuracy','Interpreter','latex','FontSize',15)
+        elseif strcmp(testing_or_training_accuracy, 'training')
+            ylabel('training accuracy','Interpreter','latex','FontSize',15)
+        end
         ylim([0.6 1])
         yticks(0:0.04:1)
         if epochs_plot<=20

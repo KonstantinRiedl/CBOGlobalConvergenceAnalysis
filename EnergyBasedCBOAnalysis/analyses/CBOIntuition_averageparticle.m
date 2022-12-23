@@ -4,7 +4,7 @@
 % for CBO. "CBO always performs a gradient descent of the squared Euclidean
 % distance to the global minimizer"
 % Such plot is used in Figure 1(b) in "Consensus-based optimization methods
-% converge globally in mean-field law"
+% converge globally"
 %
 
 %%
@@ -32,9 +32,9 @@ pdfexport = 0;
 d = 2;
 
 % % energy function E
-% (E is a function mapping columnwise from R^{d\times N} to R)
+% (E is a function mapping columnwise from R^{d\times N} to R^N)
 objectivefunction = 'Rastrigin';
-[E, parametersE, parametersCBO, parametersInitialization] = objective_function(objectivefunction, d, 'CBO');
+[E, grad_E, parametersE, parametersCBO, parametersInitialization] = objective_function(objectivefunction, d, 'CBO');
 
 % range of x (and x and y for plotting)
 xrange_plot = parametersE(:,1)';
@@ -115,7 +115,7 @@ Expectation_trajectories = zeros(NUM_RUNS,d,1+T/dt);
 Vex_trajectories = zeros(NUM_RUNS,d,NUM_EX,1+T/dt);
 for r = 1:NUM_RUNS
     
-    [Vex_trajectories(r,:,1:NUM_EX,:), Expectation_trajectories(r,:,:)] = CBO_trajectories(E,parametersCBO,V0mean,V0std,Vex);
+    [Vex_trajectories(r,:,1:NUM_EX,:), Expectation_trajectories(r,:,:)] = CBO_trajectories(E, grad_E, parametersCBO, V0mean, V0std, Vex);
     
 end
 
@@ -243,16 +243,16 @@ if pdfexport
     else
         filename = ['CBOIntuition_',objectivefunction,'_isotropicN',num2str(N),'sigma',num2str(100*sigma),'div100'];
     end
-    save(['CBOandPSO/EnergyBasedCBOAnalysis/images_videos/',filename,'_param'], 'objectivefunction', 'E', 'anisotropic', 'vstar', 'd', 'T', 'dt', 'N', 'alpha', 'lambda', 'gamma', 'learning_rate', 'sigma', 'V0mean', 'V0std', 'Vex', 'NUM_RUNS')
+    save([main_folder(),'/EnergyBasedCBOAnalysis/images_videos/',filename,'_param'], 'objectivefunction', 'E', 'anisotropic', 'vstar', 'd', 'T', 'dt', 'N', 'alpha', 'lambda', 'gamma', 'learning_rate', 'sigma', 'V0mean', 'V0std', 'Vex', 'NUM_RUNS')
 
     disp('Filename when saved in higher resolution:')
     disp(filename)
-    saveas(f,['CBOandPSO/EnergyBasedCBOAnalysis/images_videos/',filename,'.jpg']);
+    saveas(f,[main_folder(),'/EnergyBasedCBOAnalysis/images_videos/',filename,'.jpg']);
 end
 
 
 %% slightly modified CBO Function
-function [Vex_trajectory,Expectation_trajectory] = CBO_trajectories(E,parametersCBO,V0mean,V0std,Vex)
+function [Vex_trajectory, Expectation_trajectory] = CBO_trajectories(E, grad_E, parametersCBO, V0mean, V0std, Vex)
 
 % get parameters
 [d,~] = size(Vex);
@@ -284,7 +284,7 @@ for k = 1:T/dt
     v_alpha = compute_valpha(E, alpha, V);
 
     % position updates of one iteration of CBO
-    V = CBO_update(E, parametersCBO, v_alpha, V);
+    V = CBO_update(E, grad_E, parametersCBO, v_alpha, V);
     
     Expectation = sum(V,2)/N;
     Expectation_trajectory(:,k+1) = Expectation;

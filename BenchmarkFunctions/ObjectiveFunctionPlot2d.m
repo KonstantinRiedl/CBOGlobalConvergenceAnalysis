@@ -12,7 +12,7 @@ co = set_color();
 
 %% Settings for Easy Handling and Notes
 % save plot
-pdfexport = 1;
+pdfexport = 0;
 
 % plot convex envelope in case of Rastrigin function
 sqEuclildDist = 0;
@@ -25,8 +25,8 @@ d = 2;
 
 % % energy function E
 % (E is a function mapping columnwise from R^{d\times N} to R)
-objectivefunction = 'RastriginNonSeparable2';
-[E, parametersE, parametersCBO, parametersInitialization] = objective_function(objectivefunction, d, 'CBO');
+objectivefunction = 'Rastrigin';
+[E, ~, parametersE, parametersCBO, parametersInitialization] = objective_function(objectivefunction, d, 'CBO');
 
 % range of x (and x and y for plotting)
 xrange_plot = parametersE(:,1)';
@@ -85,6 +85,10 @@ if strcmp(objectivefunction,'Rastrigin')
 	xticks([-2.5 0 2.5 5])
     yticks([-2.5 0 2.5 5])
 	zticks([0 10 20 30 40 50])
+elseif strcmp(objectivefunction,'GrandCanyon') || strcmp(objectivefunction,'GrandCanyon2')
+   
+    xticks([-2 0 2 4 6 8])
+    yticks([-2 0 2 4 6 8])
 end
 
 %legend([vstarplot], 'Global minimizer $v^*$','Location','northwest','Interpreter','latex','FontSize',13)
@@ -99,9 +103,9 @@ if pdfexport
     %cleanfigure;
     %matlab2tikz('myfile.tex');
     
-    print(f,['CBOandPSO/EnergyBasedCBOAnalysis/images_videos/ObjectiveFunction2d_',objectivefunction],'-dpdf');
+    print(f,[main_folder(),'/EnergyBasedCBOAnalysis/images_videos/ObjectiveFunction2d_',objectivefunction],'-dpdf');
 
     % save parameters
-    save(['CBOandPSO/EnergyBasedCBOAnalysis/images_videos/ObjectiveFunction2d_',objectivefunction,'_param'], 'objectivefunction', 'E', 'vstar', 'd')
+    save([main_folder(),'/EnergyBasedCBOAnalysis/images_videos/ObjectiveFunction2d_',objectivefunction,'_param'], 'objectivefunction', 'E', 'vstar', 'd')
 
 end

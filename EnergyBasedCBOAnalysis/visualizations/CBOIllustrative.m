@@ -32,9 +32,9 @@ savevideo = 0;
 d = 2;
 
 % % energy function E
-% (E is a function mapping columnwise from R^{d\times N} to R)
+% (E is a function mapping columnwise from R^{d\times N} to R^N)
 objectivefunction = 'Rastrigin';
-[E, parametersE, parametersCBO, parametersInitialization] = objective_function(objectivefunction, d, 'CBO');
+[E, grad_E, parametersE, parametersCBO, parametersInitialization] = objective_function(objectivefunction, d, 'CBO');
 
 % range of x (and x and y for plotting)
 xrange_plot = parametersE(:,1)';
@@ -200,7 +200,7 @@ for k = 1:T/dt
     v_alpha = compute_valpha(E, alpha, V);
 
     % position updates of one iteration of CBO
-    V = CBO_update(E, parametersCBO, v_alpha, V);
+    V = CBO_update(E, grad_E, parametersCBO, v_alpha, V);
     
     % % Visualization of the way CBO optimizes non-convex functions
     % remove all old plotting objects
@@ -250,9 +250,9 @@ fprintf("final consensus point         : [%d;%d]\n", v_alpha)
 %% Save Video
 if savevideo
     if anisotropic
-        video = VideoWriter(['CBOandPSO/EnergyBasedCBOAnalysis/images_videos/CBOIllustrative_',objectivefunction,'_anisotropic'],'MPEG-4');
+        video = VideoWriter([main_folder(),'/EnergyBasedCBOAnalysis/images_videos/CBOIllustrative_',objectivefunction,'_anisotropic'],'MPEG-4');
     else
-        video = VideoWriter(['CBOandPSO/EnergyBasedCBOAnalysis/images_videos/CBOIllustrative_',objectivefunction,'_isotropic'],'MPEG-4');
+        video = VideoWriter([main_folder(),'/EnergyBasedCBOAnalysis/images_videos/CBOIllustrative_',objectivefunction,'_isotropic'],'MPEG-4');
     end
     video.FrameRate = 8;
     open(video);
@@ -264,8 +264,8 @@ if savevideo
     close(video);
     % save parameters
     if anisotropic
-        save(['CBOandPSO/EnergyBasedCBOAnalysis/images_videos/CBOIllustrative_',objectivefunction,'_anisotropic_param'], 'objectivefunction', 'E', 'anisotropic', 'vstar', 'd', 'T', 'dt', 'N', 'alpha', 'lambda', 'gamma', 'learning_rate', 'sigma', 'V0mean', 'V0std')
+        save([main_folder(),'/EnergyBasedCBOAnalysis/images_videos/CBOIllustrative_',objectivefunction,'_anisotropic_param'], 'objectivefunction', 'E', 'anisotropic', 'vstar', 'd', 'T', 'dt', 'N', 'alpha', 'lambda', 'gamma', 'learning_rate', 'sigma', 'V0mean', 'V0std')
     else
-        save(['CBOandPSO/EnergyBasedCBOAnalysis/images_videos/CBOIllustrative_',objectivefunction,'_isotropic_param'], 'objectivefunction', 'E', 'anisotropic', 'vstar', 'd', 'T', 'dt', 'N', 'alpha', 'lambda', 'gamma', 'learning_rate', 'sigma', 'V0mean', 'V0std')
+        save([main_folder(),'/EnergyBasedCBOAnalysis/images_videos/CBOIllustrative_',objectivefunction,'_isotropic_param'], 'objectivefunction', 'E', 'anisotropic', 'vstar', 'd', 'T', 'dt', 'N', 'alpha', 'lambda', 'gamma', 'learning_rate', 'sigma', 'V0mean', 'V0std')
     end
 end

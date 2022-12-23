@@ -3,7 +3,8 @@
 % This script compares the decay behavior of our functional V for isotropic
 % and anisotropic CBO with the theoretically expected rates in different 
 % dimensions.
-% Such plot is used in Figure 1(b) in ...
+% Such plot is used in Figure 1(b) in "Convergence of Anisotropic 
+% Consensus-Based Optimization in Mean-Field Law"
 %
 
 %%
@@ -24,6 +25,7 @@ pdfexport = 0;
 % plot settings
 semilogy_plot = 0; % show decays in semilogy plot
 normalized = 1; % normalize energy functional V
+d_or_D = 'D';
 
 
 %% Energy Function E
@@ -79,9 +81,9 @@ for i = 1:length(d)
     vstar = zeros(d(i),1);
     
     % % energy function E
-    % (E is a function mapping columnwise from R^{d\times N} to R)
+    % (E is a function mapping columnwise from R^{d\times N} to R^N)
     objectivefunction = 'Rastrigin';
-    [E, parametersE, ~, ~] = objective_function(objectivefunction, d(i), 'CBO');
+    [E, grad_E, parametersE, ~, ~] = objective_function(objectivefunction, d(i), 'CBO');
     parametersCBO = containers.Map({'T', 'dt', 'N', 'alpha', 'lambda', 'gamma', 'learning_rate', 'anisotropic', 'sigma'},...
                                    {  T,   dt,   N,   alpha,   lambda,  gamma,    learning_rate,             0, sigma});
     
@@ -139,7 +141,7 @@ for i = 1:length(d)
         v_alpha = compute_valpha(E, alpha, V);
 
         % position updates of one iteration of CBO
-        V = CBO_update(E, parametersCBO, v_alpha, V);
+        V = CBO_update(E, grad_E, parametersCBO, v_alpha, V);
 
         % % Computation of Error Metrics
         % Energy Functional V
@@ -166,7 +168,7 @@ for i = 1:length(d)
         v_alpha = compute_valpha(E, alpha, V);
 
         % position updates of one iteration of CBO
-        V = CBO_update(E, parametersCBO, v_alpha, V);
+        V = CBO_update(E, grad_E, parametersCBO, v_alpha, V);
 
         % % Computation of Error Metrics
         % Energy Functional V
@@ -189,9 +191,9 @@ set(groot,'defaultLegendInterpreter','latex');
 f = figure('Position', [1700 800 600 400]);
 for i = 1:length(d)
     if ~normalized
-        label_V_isotropic = ['$\mathcal{V}(\widehat\rho^N_t)$, isotropic CBO, $D=\,$',num2str(d(i))];
+        label_V_isotropic = ['$\mathcal{V}(\widehat\rho^N_t)$, isotropic CBO, $',d_or_D,'=\,$',num2str(d(i))];
     else
-        label_V_isotropic = ['$\mathcal{V}(\widehat\rho^N_t)/\mathcal{V}(\rho_0)$, isotropic CBO, $D=\,$',num2str(d(i))];
+        label_V_isotropic = ['$\mathcal{V}(\widehat\rho^N_t)/\mathcal{V}(\rho_0)$, isotropic CBO, $',d_or_D,'=\,$',num2str(d(i))];
     end
     if ~semilogy_plot
         errormetric_plot_isotropic = plot(0:dt:T,Vstar_isotropic(i,:), "color", co(i,:), 'LineWidth', 2, 'LineStyle', '--','DisplayName',label_V_isotropic);
@@ -203,12 +205,12 @@ end
 for i = 1:length(d)
     if ~normalized
         if constVstar==1
-            label_V_anisotropic = ['$\mathcal{V}(\widehat\rho^N_t)$, anisotropic CBO, $D=\,$',num2str(d(i))];
+            label_V_anisotropic = ['$\mathcal{V}(\widehat\rho^N_t)$, anisotropic CBO, $',d_or_D,'=\,$',num2str(d(i))];
         else
-            label_V_anisotropic = ['$\mathcal{V}(\widehat\rho^N_t)/',num2str(constVstar),'$, anisotropic CBO, $D=\,$',num2str(d(i))];
+            label_V_anisotropic = ['$\mathcal{V}(\widehat\rho^N_t)/',num2str(constVstar),'$, anisotropic CBO, $',d_or_D,'=\,$',num2str(d(i))];
         end
     else
-        label_V_anisotropic = ['$\mathcal{V}(\widehat\rho^N_t)/\mathcal{V}(\rho_0)$, anisotropic CBO, $D=\,$',num2str(d(i))];
+        label_V_anisotropic = ['$\mathcal{V}(\widehat\rho^N_t)/\mathcal{V}(\rho_0)$, anisotropic CBO, $',d_or_D,'=\,$',num2str(d(i))];
     end
     if ~semilogy_plot
         errormetric_plot_anisotropic = plot(0:dt:T,Vstar_anisotropic(i,:), "color", co(i,:), 'LineWidth', 2, 'LineStyle', '-','DisplayName',label_V_anisotropic);
@@ -231,7 +233,7 @@ end
 
 % rate of decay reference line (from theory)
 for i = 1:length(d)
-    label_rate = ['$\exp\!\big(\!-(2\lambda-D\sigma^2)t\big),\,D=\,$',regexprep(num2str(d),'\s+',', ')];
+    label_rate = ['$\exp\!\big(\!-(2\lambda-',d_or_D,'\sigma^2)t\big),\,',d_or_D,'=\,$',regexprep(num2str(d),'\s+',', ')];
     if ~semilogy_plot
         rate_plot = plot(0:dt:T,exp(-(2*lambda-d(i)*sigma^2)*[0:dt:T]), "color", 0.4*[1,1,1], 'LineWidth', 2, 'LineStyle', ':','DisplayName',label_rate);
     else
@@ -260,9 +262,9 @@ end
 
 %% Save Image
 if pdfexport
-    print(f,['CBOandPSO/EnergyBasedCBOAnalysis/images_videos/VforAn_isotropicforVariousdim_',objectivefunction],'-dpdf');
+    print(f,[main_folder(),'/EnergyBasedCBOAnalysis/images_videos/VforAn_isotropicforVariousdim_',objectivefunction],'-dpdf');
 
     % save parameters
-    save(['CBOandPSO/EnergyBasedCBOAnalysis/images_videos/VforAn_isotropicforVariousdim_',objectivefunction,'_param'], 'objectivefunction', 'E', 'vstar', 'd', 'T', 'dt', 'N', 'alpha', 'lambda', 'gamma', 'learning_rate', 'sigma', 'V0mean_radial', 'V0mean_type', 'V0std')
+    save([main_folder(),'/EnergyBasedCBOAnalysis/images_videos/VforAn_isotropicforVariousdim_',objectivefunction,'_param'], 'objectivefunction', 'E', 'vstar', 'd', 'T', 'dt', 'N', 'alpha', 'lambda', 'gamma', 'learning_rate', 'sigma', 'V0mean_radial', 'V0mean_type', 'V0std')
 end
 

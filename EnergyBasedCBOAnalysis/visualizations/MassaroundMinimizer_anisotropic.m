@@ -1,8 +1,10 @@
 % A lower bound for the probability mass  around v^*
 %
-% This script visualizes the partition used in the proof of Proposition 19.
+% This script visualizes the partition used in the proof of Proposition 2 
+% in "Convergence of Anisotropic Consensus-based Optimization in Mean-Field
+% Law".
 % Wlog we may assume here that v^*=0.
-% Such plot is used in Figure 3.
+% Such plot is used in Figure 2.
 %
 
 %%
@@ -198,10 +200,10 @@ if pdfexport
     
     filename = ['Prop19_anisotropic_','v_alpha',num2str(100*v_alpha(1)),'div100', num2str(100*v_alpha(2)),'div100','sigma',num2str(100*sigma),'div100'];
     
-    print(f,['CBOandPSO/EnergyBasedCBOAnalysis/images_videos/', filename],'-dpdf');
+    print(f,[main_folder(),'/EnergyBasedCBOAnalysis/images_videos/', filename],'-dpdf');
 
     % save parameters
-    save(['CBOandPSO/EnergyBasedCBOAnalysis/images_videos/', filename], 'sigma', 'v_alpha', 'c')
+    save([main_folder(),'/EnergyBasedCBOAnalysis/images_videos/', filename], 'sigma', 'v_alpha', 'c')
     
 end
 

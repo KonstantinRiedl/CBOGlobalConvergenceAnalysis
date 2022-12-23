@@ -1,6 +1,7 @@
 % A lower bound for the probability mass  around v^*
 %
-% This script visualizes the partition used in the proof of Proposition 19.
+% This script visualizes the partition used in the proof of Proposition 20 
+% in "Consensus-based optimization methods converge globally".
 % Wlog we may assume here that v^*=0.
 % Such plot is used in Figure 3.
 %
@@ -165,10 +166,10 @@ if pdfexport
     
     filename = ['Prop19_isotropic_','v_alpha_norm',num2str(100*v_alpha_norm),'div100','sigma',num2str(100*sigma),'div100'];
     
-    print(f,['CBOandPSO/EnergyBasedCBOAnalysis/images_videos/', filename],'-dpdf');
+    print(f,[main_folder(),'/EnergyBasedCBOAnalysis/images_videos/', filename],'-dpdf');
 
     % save parameters
-    save(['CBOandPSO/EnergyBasedCBOAnalysis/images_videos/', filename], 'sigma', 'v_alpha_norm', 'v_alpha', 'c')
+    save([main_folder(),'/EnergyBasedCBOAnalysis/images_videos/', filename], 'sigma', 'v_alpha_norm', 'v_alpha', 'c')
     
 end
 

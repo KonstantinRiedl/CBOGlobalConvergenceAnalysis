@@ -7,7 +7,7 @@
 %
 % where w_alpha(v) = exp(-alpha*E(v)).
 % For (numerical) stability reasons, we modify the definition of w_alpha(v)
-% to w_alpha(v) = exp(-alpha*E(v)-Emin), where Emin is the minimal energy
+% to w_alpha(v) = exp(-alpha*(E(v)-Emin)), where Emin is the minimal energy
 % among the particles. We note, that this does not influence the 
 % theoretical value of v_alpha.
 % 

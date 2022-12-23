@@ -77,9 +77,9 @@ for i = 1:length(d)
     vstar = zeros(d(i),1);
     
     % % energy function E
-    % (E is a function mapping columnwise from R^{d\times N} to R)
+    % (E is a function mapping columnwise from R^{d\times N} to R^N)
     objectivefunction = 'Rastrigin';
-    [E, parametersE, ~, ~] = objective_function(objectivefunction, d(i), 'CBO');
+    [E, grad_E, parametersE, ~, ~] = objective_function(objectivefunction, d(i), 'CBO');
     
     % % Initialization
     % V0mean types % 1,2,3,4 % not all different for small d
@@ -129,7 +129,7 @@ for i = 1:length(d)
         v_alpha = compute_valpha(E, alpha, V);
 
         % position updates of one iteration of CBO
-        V = CBO_update(E, parametersCBO, v_alpha, V);
+        V = CBO_update(E, grad_E, parametersCBO, v_alpha, V);
 
         % % Computation of Error Metrics
         % Energy Functional V
@@ -210,9 +210,9 @@ end
 
 %% Save Image
 if pdfexport
-    print(f,['CBOandPSO/EnergyBasedCBOAnalysis/images_videos/VforisotropicforVariousdim_',objectivefunction],'-dpdf');
+    print(f,[main_folder(),'/EnergyBasedCBOAnalysis/images_videos/VforisotropicforVariousdim_',objectivefunction],'-dpdf');
 
     % save parameters
-    save(['CBOandPSO/EnergyBasedCBOAnalysis/images_videos/VforisotropicforVariousdim_',objectivefunction,'_param'], 'objectivefunction', 'E', 'vstar', 'd', 'T', 'dt', 'N', 'alpha', 'lambda', 'gamma', 'learning_rate', 'sigma', 'V0mean_radial', 'V0mean_type', 'V0std')
+    save([main_folder(),'/EnergyBasedCBOAnalysis/images_videos/VforisotropicforVariousdim_',objectivefunction,'_param'], 'objectivefunction', 'E', 'vstar', 'd', 'T', 'dt', 'N', 'alpha', 'lambda', 'gamma', 'learning_rate', 'sigma', 'V0mean_radial', 'V0mean_type', 'V0std')
 end
 

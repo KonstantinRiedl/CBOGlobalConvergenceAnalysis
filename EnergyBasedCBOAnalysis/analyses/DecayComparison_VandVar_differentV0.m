@@ -3,7 +3,7 @@
 % This script compares the decay behavior of our functional V with the
 % variance of the particles for different initializations of CBO.
 % Such plot is used in Figure 2(b) in "Consensus-based optimization methods
-% converge globally in mean-field law"
+% converge globally"
 %
 
 %%
@@ -32,9 +32,9 @@ normalized = 1; % normalize energy functional V
 d = 1;
 
 % % energy function E
-% (E is a function mapping columnwise from R^{d\times N} to R)
+% (E is a function mapping columnwise from R^{d\times N} to R^N)
 objectivefunction = 'Rastrigin';
-[E, parametersE, parametersCBO, ~] = objective_function(objectivefunction, d, 'CBO');
+[E, grad_E, parametersE, parametersCBO, ~] = objective_function(objectivefunction, d, 'CBO');
 
 % range of x
 xrange = 100*parametersE(:,1)';
@@ -129,7 +129,7 @@ for m = 1:length(V0mu)
         v_alpha = compute_valpha(E, alpha, V);
 
         % position updates of one iteration of CBO
-        V = CBO_update(E, parametersCBO, v_alpha, V);
+        V = CBO_update(E, grad_E, parametersCBO, v_alpha, V);
 
         % % Computation of Error Metrics
         % Energy Functional V
@@ -219,13 +219,13 @@ end
 if pdfexport
     
     if anisotropic
-        print(f,['CBOandPSO/EnergyBasedCBOAnalysis/images_videos/VandVarforVariousV0_',objectivefunction, '_anisotropic'],'-dpdf');
+        print(f,[main_folder(),'/EnergyBasedCBOAnalysis/images_videos/VandVarforVariousV0_',objectivefunction, '_anisotropic'],'-dpdf');
         % save parameters
-        save(['CBOandPSO/EnergyBasedCBOAnalysis/images_videos/VandVarforVariousV0_',objectivefunction,'_anisotropic_param'], 'objectivefunction', 'E', 'anisotropic', 'vstar', 'd', 'T', 'dt', 'N', 'alpha', 'lambda', 'gamma', 'learning_rate', 'sigma', 'V0mu', 'V0var')
+        save([main_folder(),'/EnergyBasedCBOAnalysis/images_videos/VandVarforVariousV0_',objectivefunction,'_anisotropic_param'], 'objectivefunction', 'E', 'anisotropic', 'vstar', 'd', 'T', 'dt', 'N', 'alpha', 'lambda', 'gamma', 'learning_rate', 'sigma', 'V0mu', 'V0var')
     else
-        print(f,['CBOandPSO/EnergyBasedCBOAnalysis/images_videos/VandVarforVariousV0_',objectivefunction, '_isotropic'],'-dpdf');
+        print(f,[main_folder(),'/EnergyBasedCBOAnalysis/images_videos/VandVarforVariousV0_',objectivefunction, '_isotropic'],'-dpdf');
         % save parameters
-        save(['CBOandPSO/EnergyBasedCBOAnalysis/images_videos/VandVarforVariousV0_',objectivefunction,'_isotropic_param'], 'objectivefunction', 'E', 'anisotropic', 'vstar', 'd', 'T', 'dt', 'N', 'alpha', 'lambda', 'gamma', 'learning_rate', 'sigma', 'V0mu', 'V0var')
+        save([main_folder(),'/EnergyBasedCBOAnalysis/images_videos/VandVarforVariousV0_',objectivefunction,'_isotropic_param'], 'objectivefunction', 'E', 'anisotropic', 'vstar', 'd', 'T', 'dt', 'N', 'alpha', 'lambda', 'gamma', 'learning_rate', 'sigma', 'V0mu', 'V0var')
     end
     
 end
