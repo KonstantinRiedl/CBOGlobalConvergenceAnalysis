@@ -112,12 +112,14 @@ Example_CompressedSensing: compressed sensing experiments with CBO and CBOMemory
        year = {2021},
     journal = {arXiv preprint arXiv:2103.15130},
 }
+
 @article{CBOAnisotropicFornasierKlockRiedl,
       title = {Convergence of Anisotropic Consensus-Based Optimization in Mean-Field Law},
      author = {Massimo Fornasier and Timo Klock and Konstantin Riedl},
        year = {2021},
     journal = {arXiv preprint arXiv:2111.08136},
 }
+
 @article{CBOMemoryGradientRiedl,
       title = {Leveraging Memory Effects and Gradient Information in Consensus-Based Optimization: On Global Convergence in Mean-Field Law},
      author = {Konstantin Riedl},
