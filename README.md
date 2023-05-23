@@ -1,13 +1,13 @@
-# EnergyBasedCBOAnalysis
+# CBOGlobalConvergenceAnalysis
 Numerical illustration of a novel analysis framework for consensus-based optimization (CBO) and numerical experiments demonstrating the practicability of the method.
 
 CBO is a multi-agent metaheuristic derivative-free optimization method capable of globally minimizing nonconvex and nonsmooth functions in high dimensions. It is based on stochastic swarm intelligence, and inspired by consensus dynamics and opinion formation.
 
 The underlying dynamics is flexible enough to incorporate different mechanisms widely used in evolutionary computation and machine learning, such as memory effects and gradient information.
 
-Version 4.0
+Version 5.0
 
-Date 23.12.2022
+Date 23.05.2023
 
 ------
 
@@ -38,6 +38,20 @@ https://arxiv.org/abs/2211.12184
 by
 
 - Konstantin &nbsp; R i e d l &nbsp; (Technical University of Munich & Munich Center for Machine Learning)
+
+and
+
+### Gradient is All You Need?
+
+https://arxiv.org/abs/2305.XXXXX
+
+by
+
+- Konstantin &nbsp; R i e d l &nbsp; (Technical University of Munich & Munich Center for Machine Learning),
+- Timo &nbsp; K l o c k &nbsp; (deeptech consulting & formerly Simula Research Laboratory),
+- Carina &nbsp; G e l d h a u s e r &nbsp; (Technical University of Munich & Munich Center for Machine Learning),
+- Massimo &nbsp; F o r n a s i e r &nbsp; (Technical University of Munich & Munich Center for Machine Learning & Munich Data Science Institute)
+
 
 ------
 
@@ -84,6 +98,15 @@ EnergyBasedCBOmemorygradientAnalysis
     * CBOmemorygradientDynamicsIllustration.m: Illustration of the CBOmemorygradient dynamics
     * CBOmemorygradientIllustrative.m: Illustration of the CBOmemorygradient at work
 
+CBOstochasticGD
+* algorithms: code of CH scheme and GD/Langevin scheme
+    * CH: CH scheme
+    * GDLangevin: GD/Langevin scheme
+* analyses: analyses of CBO, CH and GD/Langevin scheme
+    * CBOSchemeIntuition: Intuition that CBO behaves like a stochastic relaxation of gradient descent
+    * CHSchemeIntuition: Intuition that CH behaves gradient-like
+    * GDLangevinIntuition: Visualization of GD and Langevin dynamics
+
 Example_NN: machine learning experiments with CBO and CBOMemoryGradient as optimization methods for training
 * architecture
     * NN.m: forward pass of NN
@@ -112,18 +135,24 @@ Example_CompressedSensing: compressed sensing experiments with CBO and CBOMemory
        year = {2021},
     journal = {arXiv preprint arXiv:2103.15130},
 }
-
-@article{CBOAnisotropicFornasierKlockRiedl,
-      title = {Convergence of Anisotropic Consensus-Based Optimization in Mean-Field Law},
-     author = {Massimo Fornasier and Timo Klock and Konstantin Riedl},
-       year = {2021},
-    journal = {arXiv preprint arXiv:2111.08136},
+@inproceedings{CBOAnisotropicFornasierKlockRiedl,
+  title={Convergence of anisotropic consensus-based optimization in mean-field law},
+  author={Fornasier, Massimo and Klock, Timo and Riedl, Konstantin},
+  booktitle={Applications of Evolutionary Computation: 25th European Conference, EvoApplications 2022, Held as Part of EvoStar 2022, Madrid, Spain, April 20--22, 2022, Proceedings},
+  pages={738--754},
+  year={2022},
+  organization={Springer}
 }
-
 @article{CBOMemoryGradientRiedl,
       title = {Leveraging Memory Effects and Gradient Information in Consensus-Based Optimization: On Global Convergence in Mean-Field Law},
      author = {Konstantin Riedl},
        year = {2022},
     journal = {arXiv preprint arXiv:2211.12184},
+}
+@article{GradientIsAllYouNeedRiedlKlockGeldhauserFornasier,
+      title = {Gradient is All You Need?},
+     author = {Konstantin Riedl and Timo Klock and Carina Geldhauser and Massimo Fornasier},
+       year = {2023},
+    journal = {arXiv preprint arXiv:2305.XXXXX},
 }
 ```

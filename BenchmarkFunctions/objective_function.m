@@ -262,6 +262,69 @@ elseif strcmp(name,'Rosenbrock')
                                                       {   [3;3],       4,    [0;0],       1});
         end
     end
+elseif strcmp(name,'GrandCanyon2')
+    if d>2
+        error('Dimension Error. The GrandCanyon2 function is only available in 2d.')
+    elseif d==2
+        valley = @(v) -v(2,:)-0.6*v(1,:).*(v(1,:)-4);
+        valleyblock = @(v) -v(1,:)-1.6*v(2,:);
+        E = @(v) 25*(1-exp(-1.2*(valley(v)).^2)) + 0.75*v(1,:).^2 + 0.2*v(2,:).^2 + 4*(exp(1-2*(valley(v).^2).^2)).*max((1-exp(-9*(valleyblock(v)).^2)).*sign(valleyblock(v)),0);
+%         valley = @(v) -v(2,:)-0.8*v(1,:).*(v(1,:)-4);
+%         E = @(v) 40*(1-exp(-1.2*(valley(v)).^2)) + 1.6*v(1,:).*v(1,:) + 0.8*v(2,:).*v(2,:) + 1*sum(1-cos(0.75*pi*v),1) + 1*max(exp(-1*(v(2,:)).^1)-1,0);
+        gradE = @(v) nan;
+        xrange_plot = [-2.5;5];
+        parametersE = [xrange_plot*ones(1,d), [0;50]]; %(1*[0;25]+(d-1)*[0;30]) for flat 2d plot
+        parametersOptimizer = parametersOptimizer;
+        parametersInitialization = parametersInitialization;
+    end
+elseif strcmp(name,'GrandCanyon2noisy')
+    if d>2
+        error('Dimension Error. The GrandCanyon2noisy function is only available in 2d.')
+    elseif d==2
+        valley = @(v) -v(2,:)-0.6*v(1,:).*(v(1,:)-4);
+        valleyblock = @(v) -v(1,:)-1.6*v(2,:);
+        E = @(v) 25*(1-exp(-1.2*(valley(v)).^2)) + 0.75*v(1,:).^2 + 0.2*v(2,:).^2 + 1.5*sum(1-cos(0.75*pi*v),1) + 4*(exp(1-2*(valley(v).^2).^2)).*max((1-exp(-9*(valleyblock(v)).^2)).*sign(valleyblock(v)),0);
+%         valley = @(v) -v(2,:)-0.8*v(1,:).*(v(1,:)-4);
+%         E = @(v) 40*(1-exp(-1.2*(valley(v)).^2)) + 1.6*v(1,:).*v(1,:) + 0.8*v(2,:).*v(2,:) + 2*sum(1-cos(0.75*pi*v),1) + 1*max(exp(-1*(v(2,:)).^1)-1,0);
+        gradE = @(v) nan;
+        xrange_plot = [-2.5;5];
+        parametersE = [xrange_plot*ones(1,d), [0;50]]; %(1*[0;25]+(d-1)*[0;30]) for flat 2d plot
+        parametersOptimizer = parametersOptimizer;
+        parametersInitialization = parametersInitialization;
+    end
+    
+elseif strcmp(name,'GrandCanyon3')
+    if d>2
+        error('Dimension Error. The GrandCanyon3 function is only available in 2d.')
+    elseif d==2
+        valley = @(v) v(2,:)-(2/16*(v(1,:)-1).*(v(1,:)-4).^2+2);
+        valleyblock = @(v) -v(1,:)-0.5*3.2*v(2,:);
+        E = @(v) 25*(1-exp(-1.4*(valley(v)).^2.*exp(-0.002*v(1,:).^4))) + 0.4*v(1,:).*v(1,:) + 0.2*v(2,:).*v(2,:) + 0.25*sum(1-cos(0.75*pi*v),1) + 4*(exp(1-2*(valley(v).^2).^2)).*max((1-exp(-9*(valleyblock(v)).^2)).*sign(valleyblock(v)),0);
+%         valley = @(v) v(2,:)-0.4*v(1,:).*(v(1,:)-2).*(v(1,:)-4);
+%         valleyblock = @(v) -v(1,:)-0.5*3.2*v(2,:);
+%         E = @(v) 100*(1-exp(-1.2*(valley(v)).^2.*exp(-0.004*v(1,:).^4))) + 1.6*v(1,:).*v(1,:) + 0.8*v(2,:).*v(2,:) + 1*sum(1-cos(0.75*pi*v),1) + 16*(exp(1-2*(valley(v).^2).^2)).*max((1-exp(-9*(valleyblock(v)).^2)).*sign(valleyblock(v)),0);
+        gradE = @(v) nan;
+        xrange_plot = [-2;8];
+        parametersE = [xrange_plot*ones(1,d), [0;50]]; %(1*[0;25]+(d-1)*[0;30]) for flat 2d plot
+        parametersOptimizer = parametersOptimizer;
+        parametersInitialization = parametersInitialization;
+    end
+elseif strcmp(name,'GrandCanyon3noisy')
+    if d>2
+        error('Dimension Error. The GrandCanyon3noisy function is only available in 2d.')
+    elseif d==2
+        valley = @(v) v(2,:)-(2/16*(v(1,:)-1).*(v(1,:)-4).^2+2);
+        valleyblock = @(v) -v(1,:)-0.5*3.2*v(2,:);
+        E = @(v) 25*(1-exp(-1.4*(valley(v)).^2.*exp(-0.002*v(1,:).^4))) + 0.4*v(1,:).*v(1,:) + 0.2*v(2,:).*v(2,:) + 1.1625*sum(1-cos(0.75*pi*v),1) + 4*(exp(1-2*(valley(v).^2).^2)).*max((1-exp(-9*(valleyblock(v)).^2)).*sign(valleyblock(v)),0);
+%         valley = @(v) v(2,:)-0.4*v(1,:).*(v(1,:)-2).*(v(1,:)-4);
+%         valleyblock = @(v) -v(1,:)-0.5*3.2*v(2,:);
+%         E = @(v) 100*(1-exp(-1.2*(valley(v)).^2.*exp(-0.004*v(1,:).^4))) + 1.6*v(1,:).*v(1,:) + 0.8*v(2,:).*v(2,:) + 8*sum(1-cos(0.75*pi*v),1) + 16*(exp(1-2*(valley(v).^2).^2)).*max((1-exp(-9*(valleyblock(v)).^2)).*sign(valleyblock(v)),0);
+        gradE = @(v) nan;
+        xrange_plot = [-2;8];
+        parametersE = [xrange_plot*ones(1,d), [0;50]]; %(1*[0;25]+(d-1)*[0;30]) for flat 2d plot
+        parametersOptimizer = parametersOptimizer;
+        parametersInitialization = parametersInitialization;
+    end
 else
     disp('This objective function is not implemented yet.')
 
