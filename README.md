@@ -43,7 +43,7 @@ and
 
 ### Gradient is All You Need?
 
-https://arxiv.org/abs/2305.XXXXX
+https://arxiv.org/abs/2306.09778
 
 by
 
