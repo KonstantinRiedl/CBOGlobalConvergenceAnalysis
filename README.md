@@ -130,29 +130,29 @@ Example_CompressedSensing: compressed sensing experiments with CBO and CBOMemory
 
 ```bibtex
 @article{CBOConvergenceFornasierKlockRiedl,
-      title = {Consensus-Based Optimization Methods Converge Globally},
-     author = {Massimo Fornasier and Timo Klock and Konstantin Riedl},
-       year = {2021},
-    journal = {arXiv preprint arXiv:2103.15130},
+         title = {Consensus-Based Optimization Methods Converge Globally},
+        author = {Massimo Fornasier and Timo Klock and Konstantin Riedl},
+          year = {2021},
+       journal = {arXiv preprint arXiv:2103.15130},
 }
 @inproceedings{CBOAnisotropicFornasierKlockRiedl,
-  title={Convergence of anisotropic consensus-based optimization in mean-field law},
-  author={Fornasier, Massimo and Klock, Timo and Riedl, Konstantin},
-  booktitle={Applications of Evolutionary Computation: 25th European Conference, EvoApplications 2022, Held as Part of EvoStar 2022, Madrid, Spain, April 20--22, 2022, Proceedings},
-  pages={738--754},
-  year={2022},
-  organization={Springer}
+         title = {Convergence of anisotropic consensus-based optimization in mean-field law},
+        author = {Fornasier, Massimo and Klock, Timo and Riedl, Konstantin},
+     booktitle = {Applications of Evolutionary Computation: 25th European Conference, EvoApplications 2022, Held as Part of EvoStar 2022, Madrid, Spain, April 20--22, 2022, Proceedings},
+         pages = {738--754},
+          year = {2022},
+  organization = {Springer}
 }
 @article{CBOMemoryGradientRiedl,
-      title = {Leveraging Memory Effects and Gradient Information in Consensus-Based Optimization: On Global Convergence in Mean-Field Law},
-     author = {Konstantin Riedl},
-       year = {2022},
-    journal = {arXiv preprint arXiv:2211.12184},
+         title = {Leveraging Memory Effects and Gradient Information in Consensus-Based Optimization: On Global Convergence in Mean-Field Law},
+        author = {Konstantin Riedl},
+          year = {2022},
+       journal = {arXiv preprint arXiv:2211.12184},
 }
 @article{GradientIsAllYouNeedRiedlKlockGeldhauserFornasier,
-      title = {Gradient is All You Need?},
-     author = {Konstantin Riedl and Timo Klock and Carina Geldhauser and Massimo Fornasier},
-       year = {2023},
-    journal = {arXiv preprint arXiv:2306.09778},
+         title = {Gradient is All You Need?},
+        author = {Konstantin Riedl and Timo Klock and Carina Geldhauser and Massimo Fornasier},
+          year = {2023},
+       journal = {arXiv preprint arXiv:2306.09778},
 }
 ```
