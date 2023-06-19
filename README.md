@@ -153,6 +153,6 @@ Example_CompressedSensing: compressed sensing experiments with CBO and CBOMemory
       title = {Gradient is All You Need?},
      author = {Konstantin Riedl and Timo Klock and Carina Geldhauser and Massimo Fornasier},
        year = {2023},
-    journal = {arXiv preprint arXiv:2305.XXXXX},
+    journal = {arXiv preprint arXiv:2306.09778},
 }
 ```
