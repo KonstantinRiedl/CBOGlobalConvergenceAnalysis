@@ -5,9 +5,9 @@ CBO is a multi-agent metaheuristic derivative-free optimization method capable o
 
 The underlying dynamics is flexible enough to incorporate different mechanisms widely used in evolutionary computation and machine learning, such as memory effects and gradient information.
 
-Version 5.0
+Version 6.0
 
-Date 23.05.2023
+Date 13.11.2023
 
 ------
 
@@ -33,7 +33,7 @@ and
 
 ### Leveraging Memory Effects and Gradient Information in Consensus-Based Optimization: On Global Convergence in Mean-Field Law
 
-https://arxiv.org/abs/2211.12184
+https://arxiv.org/abs/2211.12184, https://doi.org/10.1017/S0956792523000293
 
 by
 
@@ -52,6 +52,18 @@ by
 - Carina &nbsp; G e l d h a u s e r &nbsp; (Technical University of Munich & Munich Center for Machine Learning),
 - Massimo &nbsp; F o r n a s i e r &nbsp; (Technical University of Munich & Munich Center for Machine Learning & Munich Data Science Institute)
 
+and
+
+### Consensus-Based Optimization with Truncated Noise
+
+https://arxiv.org/abs/2310.16610
+
+by
+
+- Massimo &nbsp; F o r n a s i e r &nbsp; (Technical University of Munich & Munich Center for Machine Learning & Munich Data Science Institute), 
+- Peter &nbsp; R i c h t á r i k &nbsp; (King Abdullah University of Science and Technology & KAUST AI Initiative & SDAIA-KAUST Center of Excellence in Data Science and Artificial Intelligence), 
+- Konstantin &nbsp; R i e d l &nbsp; (Technical University of Munich & Munich Center for Machine Learning),
+- Lukang &nbsp; S u n &nbsp; (King Abdullah University of Science and Technology & KAUST AI Initiative),
 
 ------
 
@@ -154,5 +166,11 @@ Example_CompressedSensing: compressed sensing experiments with CBO and CBOMemory
         author = {Konstantin Riedl and Timo Klock and Carina Geldhauser and Massimo Fornasier},
           year = {2023},
        journal = {arXiv preprint arXiv:2306.09778},
+}
+@article{CBOTruncatedNoiseFornasierRichtarikRiedlSun,
+         title = {Consensus-Based Optimization with Truncated Noise},
+        author = {Massimo Fornasier and Peter Richt{\'a}rik and Konstantin Riedl and Lukang Sun},
+          year = {2023},
+       journal = {arXiv preprint arXiv:2310.16610},
 }
 ```
