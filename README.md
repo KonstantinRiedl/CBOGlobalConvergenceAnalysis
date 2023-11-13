@@ -17,6 +17,12 @@ Date 13.11.2023
 
 https://arxiv.org/abs/2103.15130
 
+by
+
+- Massimo &nbsp; F o r n a s i e r &nbsp; (Technical University of Munich & Munich Center for Machine Learning & Munich Data Science Institute), 
+- Timo &nbsp; K l o c k &nbsp; (deeptech consulting & formerly Simula Research Laboratory),
+- Konstantin &nbsp; R i e d l &nbsp; (Technical University of Munich & Munich Center for Machine Learning)
+
 and
 
 ### Convergence of Anisotropic Consensus-Based Optimization in Mean-Field Law
@@ -118,6 +124,14 @@ CBOstochasticGD
     * CBOSchemeIntuition: Intuition that CBO behaves like a stochastic relaxation of gradient descent
     * CHSchemeIntuition: Intuition that CH behaves gradient-like
     * GDLangevinIntuition: Visualization of GD and Langevin dynamics
+
+EnergyBasedCBOtruncateddiffusionAnalysis
+* analyses: convergence and parameter analyses of CBOtruncateddiffusion
+    * CBOtruncateddiffusionDecayComparison_V_differentM.m: Comparison of the decay behavior of CBO with and without truncated diffusion for different parameters
+    * CBOtruncateddiffusionParameters_PhaseTransition.m: Phase transition diagrams for parameter analysis
+* CBOtruncateddiffusion: code of CBOtruncateddiffusion optimizer
+    * CBOtruncateddiffusion.m: CBOtruncateddiffusion optimizer
+    * CBOtruncateddiffusion_update.m: one CBOtruncateddiffusion step
 
 Example_NN: machine learning experiments with CBO and CBOMemoryGradient as optimization methods for training
 * architecture
